@@ -1,0 +1,31 @@
+const express  = require('express');
+const app = express();
+const path = require('path');
+const cookies = require('cookie-parser')
+
+
+const db = require('./config/mongoose-connect');
+const usersRouter = require('./routes/usersRouter');
+const productsRouter = require('./routes/productRouter');
+const ownerRouter = require('./routes/ownersRouter');
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.set("view engine" , "ejs");
+app.use(express.static(path.join(__dirname , "public")));
+
+
+app.use("/users" , usersRouter);
+app.use("/owners" , ownerRouter);
+app.use("/products" , productsRouter);
+
+
+app.get('/' , function(req , res){
+   res.send("sab thik hai")
+})
+app.listen(3000 , function(err){
+    if(err)
+        console.log(err);
+    else
+    console.log("server chal raha hai");
+})
