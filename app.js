@@ -20,9 +20,7 @@ app.use("/owners" , ownerRouter);
 app.use("/products" , productsRouter);
 
 
-app.get('/' , function(req , res){
-   res.send("sab thik hai")
-})
+
 app.listen(3000 , function(err){
     if(err)
         console.log(err);

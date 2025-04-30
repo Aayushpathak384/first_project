@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const config = require('config')
+const debug = require("debug")("development:mongoose")
 
-mongoose.connect(`mongodb://localhost:27017/first_project`)
+mongoose.connect(`${config.get("MONGODB_URI")}/first_project`)
 .then(function(done){
-    console.log("database connected");
+    debug("database connected");
 })
 .catch(function(err){
     console.log(err);
