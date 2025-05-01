@@ -3,7 +3,7 @@ const router = express();
 const ownerModels = require('../models/owner-models');
 
 
-if(process.env.NODE_ENV===development)
+if(process.env.NODE_ENV==="development")
 {
     router.post('/create' ,async function(req ,res){
        let check_owner = await ownerModels.find();

@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
        type:Array,
        default:[],
     },
-    is_admin:Boolean,
+    
     order:{
         type:Array,
         default:[],
@@ -21,4 +21,4 @@ const userSchema = mongoose.Schema({
     picture:String,
 });
 
-module.exports = mongoose.model({userSchema} , "user");
+module.exports = mongoose.model( "user" , userSchema);
