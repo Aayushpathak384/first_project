@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile Picture</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .profile-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .profile-pic-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 25px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #e0e0e0;
+      background-color: #f0f0f0;
+    }
+
+    .profile-pic {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #4CAF50;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .upload-section {
+      margin-top: 20px;
+    }
+
+    .image-upload {
+      border: 2px dashed #c8a97e;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+      background-color: #f9f5f0;
+      margin-bottom: 15px;
+    }
+
+    .image-upload:hover {
+      border-color: #5a3921;
+      background-color: #f8f5f2;
+    }
+
+    .upload-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .upload-preview i {
+      font-size: 2.5rem;
+      color: #5a3921;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-preview p {
+      font-weight: 500;
+      color: #2a2a2a;
+    }
+
+    .upload-preview span {
+      color: #777;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+
+    .image-upload input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .upload-btn:hover {
+      background-color: #45a049;
+    }
+
+    .formats {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .error-message {
+      color: #f44336;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h1>Update Profile Picture</h1>
+
+    <form id="profileForm" action="/users/profile/update/pic" method="POST" enctype="multipart/form-data">
+      <div class="profile-pic-container">
+        <% if (user.image) { %>
+          <img id="profile-pic" class="profile-pic" src="data:image/png;base64,<%= user.image %>" alt="Profile Picture">
+        <% } else { %>
+          <img id="profile-pic" class="profile-pic" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>" alt="Default Picture">
+        <% } %>
+      </div>
+
+      <div class="upload-section">
+        <div class="image-upload">
+          <div class="upload-preview">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Click to upload profile picture</p>
+            <span>or drag and drop</span>
+            <input type="file" name="Image" accept="image/*" required>
+          </div>
+        </div>
+
+       
+
+        <button type="submit" class="upload-btn">Upload Picture</button>
+        <div class="formats">Supported formats: JPG, PNG, GIF (Max 5MB)</div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
