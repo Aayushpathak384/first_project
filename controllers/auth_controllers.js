@@ -70,17 +70,14 @@ module.exports.login_user = async function (req, res) {
     }
 };
 
-module.exports.logout_user = async function (req, res) {
-    req.session.destroy((err) => {
-        if (err) {
-            console.log("Session destroy error:", err);
-            return res.status(500).send("Could not log out");
-        }
+module.exports.logout_user = function (req, res) {
+    // If using cookies to store JWT
+    res.clearCookie("token"); // use the actual cookie name if different
 
-        res.clearCookie("connect.sid"); // only if you're using default session name
-        res.redirect("/users/login");
-    });
+    // Redirect to login
+    res.redirect("/users/login");
 };
+
 
 module.exports.logout_owner = async function (req, res) {
     req.session.destroy((err) => {

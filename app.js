@@ -2,9 +2,9 @@ const express  = require('express');
 const app = express();
 const path = require('path');
 const cookies = require('cookie-parser');
-require("dotenv").config();
+//require("dotenv").config();
  const flash = require('connect-flash');
- const expressSession = require('express-session');
+// const expressSession = require('express-session');
 
 
 const db = require('./config/mongoose-connect');
@@ -14,11 +14,16 @@ const ownerRouter = require('./routes/ownersRouter');
 const indexRouter = require('./routes/index');
 
 app.use(cookies());
+const expressSession = require('express-session');
+require('dotenv').config(); // make sure this is before using process.env
+
 app.use(expressSession({
-    resave:false,
-    saveUninitialized:false,
-    secret: process.env.EXPRESS_SESSION_SECRET,
-}))
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.EXPRESS_SESSION_SECRET, // or hardcode a string just for testing
+}));
+
+
 
 
 app.use(flash());
