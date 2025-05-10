@@ -3,16 +3,19 @@ const router = express.Router();
 const isloggedin = require('../middleware/isloggedin');
 const productModels = require('../models/product-models');
 const userModels = require('../models/user-models');
+const ownerModel = require('../models/owner-models');
 const addressModels = require('../models/address-model');
 const isloggedin_owner = require('../middleware/isloggedin_owner');
-//const common_user_owner = require('../middleware/common_user_owner');
+const common_user_owner = require('../middleware/common_user_owner');
 
 // Home route
 router.get('/', isloggedin, async function(req, res) {
     try {
-        let error = req.flash("error");
+       const user = await userModels.findOne({ email: req.user.email });
+        if (!user) return res.status(404).send("User not found");
+
         const products = await productModels.find();
-        res.render("home", { error, products });
+        res.render("home", {  products,user });
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Server Error");
@@ -114,15 +117,44 @@ router.post('/checkout/submit', isloggedin, async function(req, res) {
 
 
 // Order route - FIXED: Using common_user_owner middleware
-router.get('/order', isloggedin, async function(req, res) {
+router.get('/order/:data', common_user_owner, async function(req, res) {
     try {
         // Get the authenticated user (already verified by isloggedin middleware)
         const user = req.user;
+        const owner = req.owner;
+        let dbUser = null;
+        let dbOwner = null;
+        const userId = req.params.data;
+        //console.log(userId);
+        
         
         // Find the user in database
-        const dbUser = await userModels.findOne({ email: user.email });
-        if (!dbUser) return res.status(404).send("User not found");
+        if(user)
+        {
+             dbUser = await userModels.findOne({ email: user.email });
+             
+        }
+        else if(owner)
+        {
 
+         dbOwner = await ownerModel.findOne({email:owner.email});
+         
+        }
+        if(!dbUser)
+        {
+            
+            dbUser = await userModels.findOne({ _id: userId });
+        }
+        
+         if (!dbUser && !dbOwner) {
+            
+            
+                return res.status(404).send("User not found");
+           
+        }
+        
+         // Determine which user type we're working with
+        
         // Get products in cart
         const products = await productModels.find({ _id: { $in: dbUser.cart } });
         

@@ -80,15 +80,8 @@ module.exports.logout_user = function (req, res) {
 
 
 module.exports.logout_owner = async function (req, res) {
-    req.session.destroy((err) => {
-        if (err) {
-            console.log("Session destroy error:", err);
-            return res.status(500).send("Could not log out");
-        }
-
-        res.clearCookie("connect.sid"); // only if you're using default session name
-        res.redirect("/users/login");
-    });
+   res.clearCookie("token");
+   res.redirect("/users/login");
 };
 
 module.exports.create_owner = async function (req, res) {

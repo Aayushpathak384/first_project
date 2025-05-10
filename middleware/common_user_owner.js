@@ -1,27 +1,38 @@
-const isLoggedIn = require('./isLoggedIn');
-const isOwnerLoggedIn = require('./isOwnerLoggedIn');
+const jwt = require('jsonwebtoken');
+const userModel = require('../models/user-models');
+const ownerModel = require('../models/owner-models');
 
-module.exports = function() {
-    return async function(req, res, next) {
-        try {
-            // Try user auth first
-            await isLoggedIn(req, res, () => {
-                req.isUser = true;
-                return next();
-            }).catch(async () => {
-                // If user auth fails, try owner auth
-                await isOwnerLoggedIn(req, res, () => {
-                    req.isOwner = true;
-                    return next();
-                }).catch(() => {
-                    // Both failed - redirect to login
-                    req.flash("error", "Please login to access this page");
-                    return res.redirect('/login');
-                });
-            });
-        } catch (err) {
-            console.error(err);
-            res.status(500).send("Authentication error");
-        }
-    };
-};
+
+module.exports = async function (req , res , next){
+    if (!req.cookies?.token) {
+        //req.flash("error", "You need to login first");
+        return res.redirect('/users/login');
+    }
+     try {
+           const decoded = jwt.verify(req.cookies.token, process.env.JWT_KEY);
+           const user = await userModel.findOne({ email: decoded.email }).select("-password");
+           const owner = await ownerModel.findOne({ email: decoded.email }).select("-password");
+        
+          
+
+           if (!user && !owner) {
+              // req.flash("error", "You need to login first");
+              
+               return res.redirect('/users/login');
+           }
+           if(user)
+           req.user = user;
+           else(owner)
+           req.owner = owner;
+           
+           next();
+            
+        
+  
+       } catch (error) {
+           //req.flash("error", "You need to login first");
+           return res.redirect('/users/login');
+       }
+     
+
+}

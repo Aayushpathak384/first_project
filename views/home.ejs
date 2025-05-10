@@ -78,14 +78,7 @@
 </head>
 <body>
     <!-- Flash Message - Example error message (remove the 'style' attribute in production) -->
-    <% if (error && error.length > 0) { %>
-        <div class="flash-message error">
-            <div class="flash-content">
-                <span class="flash-text"><%= error[0] %></span>
-                <button class="flash-close" onclick="this.parentElement.parentElement.style.display='none'">&times;</button>
-            </div>
-        </div>
-        <% } %>
+    
 
     <!-- Navigation Bar -->
     <nav class="navbar">
@@ -97,7 +90,7 @@
             <div class="nav-links">
                 <a href="/">Home</a>
                 <a href="/users/logout">Logout</a>
-                <a href="#">About</a>
+                <a href="/order/<%=user._id%>">Orders</a>
                 <a href="#">Contact</a>
             </div>
             <div class="nav-icons">
