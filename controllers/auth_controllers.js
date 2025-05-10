@@ -6,7 +6,7 @@ const { generate_token } = require('../utils/generate_tokens');
 const ownerModel = require('../models/owner-models');
 
 const cookieParser = require('cookie-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const ownerModels = require('../models/owner-models');
 
 
