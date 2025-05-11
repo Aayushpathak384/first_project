@@ -1,12 +1,18 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-
-// Add connection options for better practice
-mongoose.connect(`${process.env.MONGODB_URI}/first_project`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+mongoose.connect(process.env.MONGODB_URI, {
+  dbName: 'first_project' // Specify database name here
 })
-.then(() => console.log("Database connected"))
-.catch(err => console.error(err));
+.then(() => {
+  console.log('✅ MongoDB connected successfully');
+  
+  // Start your server after successful connection
+  
+})
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err.message);
+  
+});
+
 
 module.exports = mongoose.connection;
